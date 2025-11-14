@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\HigherOrderCollectionProxy;
 use JsonSerializable;
+use Stringable;
 use UnexpectedValueException;
 use UnitEnum;
 
@@ -1100,11 +1101,7 @@ trait EnumeratesValues
             $value = enum_value($value);
 
             $strings = array_filter([$retrieved, $value], function ($value) {
-                return match (true) {
-                    is_string($value) => true,
-                    $value instanceof \Stringable => true,
-                    default => false,
-                };
+                return is_string($value) || $value instanceof Stringable;
             });
 
             if (count($strings) < 2 && count(array_filter([$retrieved, $value], 'is_object')) == 1) {

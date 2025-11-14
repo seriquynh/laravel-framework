@@ -78,10 +78,7 @@ class Frame
      */
     public function source()
     {
-        return match (true) {
-            is_string($this->class()) => $this->class(),
-            default => $this->file(),
-        };
+        return is_string($class = $this->class()) ? $class : $this->file();
     }
 
     /**
@@ -153,10 +150,7 @@ class Frame
      */
     public function callable()
     {
-        return match (true) {
-            ! empty($this->frame['function']) => $this->frame['function'],
-            default => 'throw',
-        };
+        return ! empty($this->frame['function']) ? $this->frame['function'] : 'throw';
     }
 
     /**
@@ -173,10 +167,7 @@ class Frame
         return array_map(function ($argument) {
             [$key, $value] = $argument;
 
-            return match ($key) {
-                'object' => "{$key}({$value})",
-                default => $key,
-            };
+            return $key === 'object' ? "{$key}({$value})" : $key;
         }, $this->frame['args']);
     }
 

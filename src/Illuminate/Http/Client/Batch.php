@@ -255,12 +255,7 @@ class Batch
         $promises = [];
 
         foreach ($this->requests as $key => $item) {
-            $promise = match (true) {
-                $item instanceof PendingRequest => $item->getPromise(),
-                default => $item,
-            };
-
-            $promises[$key] = $promise;
+            $promises[$key] = $item instanceof PendingRequest ? $item->getPromise() : $item;
         }
 
         if (! empty($promises)) {
